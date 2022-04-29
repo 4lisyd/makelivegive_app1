@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "185420510517",
+    "project_id": "make-give-live",
+    "storage_bucket": "make-give-live.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185420510517:android:7bd408e706e88d9595487c",
+        "android_client_info": {
+          "package_name": "com.makegivelive.makegivelive_app1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "185420510517-d647adv3cr6bj8spr6bdofh0fefhci0i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqZ4Rb0y8QK4EMS-QCw20qbyPmqxV0WvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "185420510517-d647adv3cr6bj8spr6bdofh0fefhci0i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
