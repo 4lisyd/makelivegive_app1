@@ -11,7 +11,11 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  Key userNameKey = const Key("sd");
+  final _formNameKey1 = GlobalKey<FormState>();
+  final _formNameKey2 = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController pwController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +37,15 @@ class _SignInState extends State<SignIn> {
             Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width / 1.2,
-              child: inputField1(userNameKey, "Enter Your Email.", context),
+              child: inputField1(
+                  emailController, _formNameKey1, "Enter Your Email.", context),
             ),
             SizedBox(height: 30),
             Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width / 1.2,
-              child: inputField1(userNameKey, "Enter Your Password.", context),
+              child: inputField1(
+                  pwController, _formNameKey2, "Enter Your Password.", context),
             ),
             SizedBox(height: 60),
             button1(() {}, "Sign In", context),
@@ -50,8 +56,10 @@ class _SignInState extends State<SignIn> {
                   MaterialPageRoute(builder: (context) => SignUp()),
                 );
               },
-              child: Text('Need an account?',
-                  style: Theme.of(context).textTheme.bodyText1),
+              child: Text(
+                'Need an account?',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
             ),
           ],
         ),

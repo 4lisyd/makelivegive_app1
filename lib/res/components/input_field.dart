@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-TextFormField inputField1(
-    formKey, String textString, BuildContext contextOutside) {
+TextFormField inputField1(textEditingController, formKey, String textString,
+    BuildContext contextOutside) {
   return TextFormField(
+    controller: textEditingController,
     style: TextStyle(color: Theme.of(contextOutside).primaryColorDark),
     cursorColor: Theme.of(contextOutside).primaryColor,
     key: formKey,

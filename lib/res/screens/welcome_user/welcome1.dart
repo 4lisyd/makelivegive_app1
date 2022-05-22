@@ -11,7 +11,7 @@ class _Welcome1State extends State<Welcome1> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: const Center(child: Text('dfsjkjskj')),
+      child: const Center(child: Text('sss')),
       color: Colors.black,
     );
   }
