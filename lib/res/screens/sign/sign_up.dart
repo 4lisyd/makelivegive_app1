@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:makegivelive/res/components/buttons.dart';
 import 'package:makegivelive/res/components/input_field.dart';
+import 'package:makegivelive/res/models/sharedpreferences.dart';
 import 'package:makegivelive/res/screens/home/HomeScreen.dart';
 import 'package:makegivelive/res/screens/sign/sign_in.dart';
-
-import 'package:provider/provider.dart';
-import 'package:makegivelive/res/models/maker.dart';
 import 'package:makegivelive/res/models/firestore.dart';
 
 class SignUp extends StatefulWidget {
@@ -20,18 +18,18 @@ class _SignUpState extends State<SignUp> {
   List<String> listOfGroups = [];
   String currentGroup = "";
 
+  FireStore firestore = FireStore();
+  Sharedpreferences sharedPreferences = Sharedpreferences();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController pwController = TextEditingController();
+
+  final _formNameKey3 = GlobalKey<FormState>();
+  final _formNameKey4 = GlobalKey<FormState>();
+  final _formNameKey5 = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    FireStore firestore = FireStore();
-
-    TextEditingController nameController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController pwController = TextEditingController();
-
-    final _formNameKey3 = GlobalKey<FormState>();
-    final _formNameKey4 = GlobalKey<FormState>();
-    final _formNameKey5 = GlobalKey<FormState>();
-
     return Scaffold(
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -141,8 +139,13 @@ class _SignUpState extends State<SignUp> {
               // print("widget.nameController.text");
               // dynamic xcv = await widget.firestore.getGroups();
               // print(xcv[0].data());
-              // print(xcv[0].runtimeType);
-
+              // print(nameController.text);
+              // print(emailController.text);
+              // print(pwController.text);
+              // print(iama);
+              // print(currentGroup);
+              firestore.signUpMaker(
+                  nameController.text, currentGroup, emailController.text);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const HomeScreen()));
             }, "Sign Up", context),

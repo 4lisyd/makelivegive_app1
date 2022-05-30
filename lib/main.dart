@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:makegivelive/res/models/maker.dart';
+import 'package:makegivelive/res/models/sharedpreferences.dart';
 import 'package:makegivelive/res/screens/home/HomeScreen.dart';
 import 'package:makegivelive/res/screens/sign/sign_up.dart';
+import 'package:makegivelive/res/screens/welcome.dart';
 import 'package:makegivelive/res/theme/style.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +12,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => Maker())],
+    providers: [
+      ChangeNotifierProvider(create: (_) => Maker()),
+      ChangeNotifierProvider(create: (_) => SharedPreferences()),
+    ],
     child: MyApp(),
   ));
 }
@@ -30,7 +35,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: appTheme(),
 
-      home: HomeScreen(),
+      home: SignUp(),
       //todo: add animated splash
       //screen instead
     );

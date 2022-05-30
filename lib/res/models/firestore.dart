@@ -22,6 +22,21 @@ class FireStore with ChangeNotifier {
     return await querySnapshot.get();
   }
 
+  Future signUpMaker(String name, String groupName, String memberEmail) async {
+    // we add their email in groups.member
+
+    dynamic ok = db.collection("groups").doc(groupName).set({
+      "members": FieldValue.arrayUnion([memberEmail])
+    });
+
+    dynamic ok2 = db
+        .collection("makers")
+        .doc(memberEmail)
+        .set({"groupName": groupName, "name": name, "email": memberEmail});
+
+    print(ok.toString());
+  }
+
   setTest() {
     final user = <String, dynamic>{
       "first": "Ada",
