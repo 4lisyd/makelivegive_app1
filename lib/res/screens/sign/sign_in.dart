@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:makegivelive/res/components/buttons.dart';
 import 'package:makegivelive/res/components/input_field.dart';
+import 'package:makegivelive/res/components/toast.dart';
+import 'package:makegivelive/res/models/sharedpreferences.dart';
 import 'package:makegivelive/res/screens/sign/sign_up.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../home/HomeScreen.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -16,6 +23,7 @@ class _SignInState extends State<SignIn> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController pwController = TextEditingController();
+  Sharedpreferences sharedPreferences = Sharedpreferences();
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +56,29 @@ class _SignInState extends State<SignIn> {
                   pwController, _formNameKey2, "Enter Your Password.", context),
             ),
             SizedBox(height: 60),
-            button1(() {}, "Sign In", context),
+            button1(() {
+              FirebaseAuth.instance
+                  .signInWithEmailAndPassword(
+                      email: emailController.text, password: pwController.text)
+                  .onError((error, stackTrace) => toastIt(error.toString()))
+                  .then((value) {
+                sharedPreferences.prefs.then((value) {
+                  value.setBool("loggedIn", true);
+                  value.setString("emailLoggedIn", emailController.text);
+                });
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            HomeScreen(emailController.text)));
+              });
+            }, "Sign In", context),
             TextButton(
               onPressed: () {
+                //todo: check controllers to validate login
+                // after login add to sharedpreferences
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SignUp()),

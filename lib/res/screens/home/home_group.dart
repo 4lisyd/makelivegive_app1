@@ -1,9 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:makegivelive/res/components/buttons.dart';
 import 'package:makegivelive/res/components/ui_misc.dart';
+import 'package:makegivelive/res/models/currentUser.dart';
+import 'package:makegivelive/res/models/firestore.dart';
+import 'package:makegivelive/res/models/sharedpreferences.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GroupHome extends StatefulWidget {
   const GroupHome({Key? key}) : super(key: key);
@@ -15,6 +21,12 @@ class GroupHome extends StatefulWidget {
 class _GroupHomeState extends State<GroupHome> {
   @override
   Widget build(BuildContext context) {
+    ///////////////////////////////////
+    ///
+    ///
+    ///
+    ///stuck here, the problem is that it is not waiting for await hence the list of members do not get filled at all.
+
     return SingleChildScrollView(
       child: Center(
         child: Column(children: [
@@ -23,7 +35,7 @@ class _GroupHomeState extends State<GroupHome> {
           ),
           Container(
             width: MediaQuery.of(context).size.width - 80,
-            child: Text("The Group Name",
+            child: Text(context.watch<CurrentUser>().groupName,
                 style: Theme.of(context).textTheme.headline2,
                 textAlign: TextAlign.left),
           ),
@@ -43,89 +55,22 @@ class _GroupHomeState extends State<GroupHome> {
               ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Column(
-                      children: [
-                        CircleAvatar(
-                          minRadius: MediaQuery.of(context).size.width / 12,
-                          child: Icon(
-                            Icons.person,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          "Taylor",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      children: [
-                        CircleAvatar(
-                          minRadius: MediaQuery.of(context).size.width / 12,
-                          child: Icon(
-                            Icons.person,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          "Andrew",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      children: [
-                        CircleAvatar(
-                          minRadius: MediaQuery.of(context).size.width / 12,
-                          child: Icon(
-                            Icons.person,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          "Claire",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      children: [
-                        CircleAvatar(
-                          minRadius: MediaQuery.of(context).size.width / 12,
-                          child: Icon(
-                            Icons.person,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          "Andrew",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      children: [
-                        CircleAvatar(
-                          minRadius: MediaQuery.of(context).size.width / 12,
-                          child: Icon(
-                            Icons.person,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          "Andrew",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 10),
-                  ],
+                child: FutureBuilder(
+                  // todo:// fix the group members manually given
+                  future: FireStore()
+                      .getGroupMembers(context.watch<CurrentUser>().groupName),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      return Row(
+                        children: [
+                          for (String i in snapshot.data.data()['members'])
+                            memberAvatar(i)
+                        ],
+                      );
+                    } else {
+                      return Row();
+                    }
+                  },
                 ),
               ),
               Expanded(
@@ -203,6 +148,35 @@ class _GroupHomeState extends State<GroupHome> {
           ),
         ]),
       ),
+    );
+  }
+}
+
+class memberAvatar extends StatelessWidget {
+  memberAvatar(this.name);
+
+  String name;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Column(
+          children: [
+            CircleAvatar(
+              minRadius: MediaQuery.of(context).size.width / 12,
+              child: Icon(
+                Icons.person,
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              name.substring(0, name.indexOf("@")),
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(),
+            ),
+          ],
+        ),
+        SizedBox(width: 10),
+      ],
     );
   }
 }

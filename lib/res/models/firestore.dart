@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
 // import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,6 +24,26 @@ class FireStore with ChangeNotifier {
     return await querySnapshot.get();
   }
 
+  Future<DocumentSnapshot> getGroupMembers(String groupName) async {
+    dynamic ok =
+        db.collection("groups").doc(groupName).get().then((value) => value);
+
+    return ok;
+  }
+
+  Future<DocumentSnapshot> getGroupChat(String groupName) async {
+    dynamic ok =
+        db.collection("groups").doc(groupName).get().then((value) => value);
+
+    return ok;
+  }
+
+  Future getCurrentUserWithEmail(String email) {
+    dynamic ok = db.collection("makers").doc(email).get();
+
+    return ok;
+  }
+
   Future signUpMaker(String name, String groupName, String memberEmail) async {
     // we add their email in groups.member
 
@@ -37,11 +59,14 @@ class FireStore with ChangeNotifier {
     print(ok.toString());
   }
 
-  setTest() {
-    final user = <String, dynamic>{
-      "first": "Ada",
-      "last": "Lovelace",
-      "born": 1815
-    };
+  Future signUpLeader(String name, String groupName, String memberEmail) async {
+    //  dynamic ok = db.collection("groups").doc(groupName).set({
+    //   "members": FieldValue.arrayUnion([memberEmail])
+    // });
+
+    dynamic ok2 = db
+        .collection("leaders")
+        .doc(memberEmail)
+        .set({"groupName": groupName, "name": name, "email": memberEmail});
   }
 }
