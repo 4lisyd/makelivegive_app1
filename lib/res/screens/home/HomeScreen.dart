@@ -100,7 +100,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Icon(Icons.person),
                 radius: 25,
               ),
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext) => Container(
+                          width: MediaQuery.of(context).size.width - 300,
+                          child: Center(
+                            child: Text("sd"),
+                          ),
+                        ));
+              },
             ),
           ],
         ),

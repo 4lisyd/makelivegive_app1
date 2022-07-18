@@ -31,9 +31,30 @@ class FireStore with ChangeNotifier {
     return ok;
   }
 
-  Future<DocumentSnapshot> getGroupChat(String groupName) async {
-    dynamic ok =
-        db.collection("groups").doc(groupName).get().then((value) => value);
+  Future<QuerySnapshot> getGroupChat(String groupName) async {
+    dynamic ok = db
+        .collection("groups")
+        .doc(groupName)
+        .collection("groupChat")
+        .orderBy('timeCreated', descending: false)
+        .get();
+    // .doc()
+    // .get();
+    // .then((value) => value);
+
+    return ok;
+  }
+
+  Future<DocumentSnapshot> getGroupData(String groupName) async {
+    dynamic ok = db
+        .collection("groups")
+        .doc(groupName)
+
+        // .orderBy('timeCreated', descending: false)
+        .get();
+    // .doc()
+    // .get();
+    // .then((value) => value);
 
     return ok;
   }
@@ -68,5 +89,28 @@ class FireStore with ChangeNotifier {
         .collection("leaders")
         .doc(memberEmail)
         .set({"groupName": groupName, "name": name, "email": memberEmail});
+  }
+
+  Future sendMessageInGroup(
+      String message, String sender, int senderRole, String groupName) {
+    dynamic ok2 =
+        db.collection("groups").doc(groupName).collection("groupChat").add({
+      "message": message,
+      "sender": sender,
+      "senderRole": senderRole == 1 ? "leader" : "maker",
+      "timeCreated": Timestamp.now(),
+    });
+
+    // .update({
+    //   "groupChat": [
+    //     {
+    //       "message": message,
+    //       "sender": sender,
+    //       "senderRole": senderRole == 1 ? "leader" : "maker",
+    //     }
+    //   ]
+    // });
+
+    return ok2;
   }
 }

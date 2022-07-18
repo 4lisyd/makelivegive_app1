@@ -22,35 +22,62 @@ class curvyRightCard extends StatelessWidget {
   }
 }
 
-class aInventoryItem extends StatelessWidget {
-  const aInventoryItem({
-    Key? key,
-  }) : super(key: key);
+class memberAvatar extends StatelessWidget {
+  memberAvatar(this.name);
 
+  String name;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Column(
+          children: [
+            CircleAvatar(
+              minRadius: MediaQuery.of(context).size.width / 12,
+              child: Icon(
+                Icons.person,
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              name.substring(0, name.indexOf("@")),
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(),
+            ),
+          ],
+        ),
+        SizedBox(width: 10),
+      ],
+    );
+  }
+}
+
+class aInventoryItem extends StatelessWidget {
+  aInventoryItem(this.noReqired, this.productName, this.productCode);
+  int noReqired;
+  String productName;
+  String productCode;
   @override
   Widget build(BuildContext context) {
     return Container(
       child:
-          Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
+          children: [
             Icon(
               Icons.shopping_cart_rounded,
               size: 35,
             ),
-            Text(
-              "22 required",
-            ),
+            Text("${noReqired} required"),
           ],
         ),
-        Text("Product Name",
+        Text(productName,
             style: Theme.of(context)
                 .textTheme
                 .bodyText1
                 ?.copyWith(fontWeight: FontWeight.w800)),
-        Text("Product Code", style: Theme.of(context).textTheme.bodyText1),
+        Text(productCode, style: Theme.of(context).textTheme.bodyText1),
       ]),
       height: MediaQuery.of(context).size.height / 7,
       width: MediaQuery.of(context).size.width / 3,
